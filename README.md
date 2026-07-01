@@ -28,7 +28,6 @@
 <!-- Persistence -->
 <img src="https://img.shields.io/badge/Repository-Pattern-2E8B57">
 <img src="https://img.shields.io/badge/JPA-Entities-20B2AA">
-<img src="https://img.shields.io/badge/Relational-Data_Model-4682B4">
 <img src="https://img.shields.io/badge/Transaction-Persistence-228B22">
 
 <!-- Engineering Concepts -->
@@ -39,7 +38,6 @@
 
 <!-- Testing -->
 <img src="https://img.shields.io/badge/JUnit-5-C21325">
-<img src="https://img.shields.io/badge/Embedded-Kafka-Testing-000000">
 <img src="https://img.shields.io/badge/Integration-Testing-32CD32">
 <img src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white">
 
