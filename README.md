@@ -25,7 +25,6 @@
 <img src="https://img.shields.io/badge/Asynchronous-Messaging-7B68EE">
 
 <!-- Persistence -->
-<img src="https://img.shields.io/badge/Repository-Pattern-2E8B57">
 <img src="https://img.shields.io/badge/JPA-Entities-20B2AA">
 
 <!-- Engineering Concepts -->
