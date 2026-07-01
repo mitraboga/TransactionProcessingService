@@ -28,7 +28,6 @@
 <!-- Persistence -->
 <img src="https://img.shields.io/badge/Repository-Pattern-2E8B57">
 <img src="https://img.shields.io/badge/JPA-Entities-20B2AA">
-<img src="https://img.shields.io/badge/Transaction-Persistence-228B22">
 
 <!-- Engineering Concepts -->
 <img src="https://img.shields.io/badge/Business_Rule-Validation-FF8C00">
