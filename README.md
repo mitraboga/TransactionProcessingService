@@ -1,7 +1,6 @@
 <div align="center">
 
-#  MidasCore 🏦
-
+# 🏦 MidasCore 💱
 ### Enterprise Event-Driven Financial Transaction Processing Service
 
 #### JPMorgan Chase Software Engineering Virtual Experience (Forage)
