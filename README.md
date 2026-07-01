@@ -3,8 +3,6 @@
 # 🏦 MidasCore 💱
 ### Enterprise Event-Driven Financial Transaction Processing Service
 
-#### JPMorgan Chase Software Engineering Virtual Experience (Forage)
-
 <p align="center">
 
 <!-- Core Stack -->
