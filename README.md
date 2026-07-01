@@ -1,38 +1,54 @@
-<p align="center">
-  <img src="assets/demo/MidasCore_Demo.gif" width="100%">
-</p>
+<div align="center">
 
-<h1 align="center">
-MidasCore
-</h1>
+#  MidasCore 🏦
 
-<h3 align="center">
-Enterprise Event-Driven Financial Transaction Processing Service
-</h3>
+### Enterprise Event-Driven Financial Transaction Processing Service
 
-<p align="center">
-JPMorgan Chase Software Engineering Virtual Experience (Forage)
-</p>
-
----
+#### JPMorgan Chase Software Engineering Virtual Experience (Forage)
 
 <p align="center">
 
-![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge)
+<!-- Core Stack -->
+<img src="https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white">
+<img src="https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/Apache_Kafka-Event_Driven-231F20?logo=apachekafka&logoColor=white">
+<img src="https://img.shields.io/badge/Spring_Data-JPA-6DB33F?logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/Hibernate-ORM-59666C?logo=hibernate&logoColor=white">
+<img src="https://img.shields.io/badge/H2-In_Memory_Database-09476B">
 
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.5-green?style=for-the-badge)
+<!-- APIs -->
+<img src="https://img.shields.io/badge/REST-API-005571?logo=fastapi&logoColor=white">
+<img src="https://img.shields.io/badge/RestTemplate-HTTP_Client-0A66C2">
+<img src="https://img.shields.io/badge/JSON-Serialization-000000?logo=json&logoColor=white">
 
-![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-Event_Driven-black?style=for-the-badge)
+<!-- Messaging -->
+<img src="https://img.shields.io/badge/Kafka-Consumer-E10098">
+<img src="https://img.shields.io/badge/Event--Driven-Architecture-6F42C1">
+<img src="https://img.shields.io/badge/Asynchronous-Messaging-7B68EE">
 
-![Spring Data JPA](https://img.shields.io/badge/Spring_Data-JPA-success?style=for-the-badge)
+<!-- Persistence -->
+<img src="https://img.shields.io/badge/Repository-Pattern-2E8B57">
+<img src="https://img.shields.io/badge/JPA-Entities-20B2AA">
+<img src="https://img.shields.io/badge/Relational-Data_Model-4682B4">
+<img src="https://img.shields.io/badge/Transaction-Persistence-228B22">
 
-![REST API](https://img.shields.io/badge/REST-API-blue?style=for-the-badge)
+<!-- Engineering Concepts -->
+<img src="https://img.shields.io/badge/Business_Rule-Validation-FF8C00">
+<img src="https://img.shields.io/badge/Dependency-Injection-8A2BE2">
+<img src="https://img.shields.io/badge/Microservice-Integration-4169E1">
+<img src="https://img.shields.io/badge/Distributed-Systems-483D8B">
 
-![H2 Database](https://img.shields.io/badge/H2-In_Memory_Database-blueviolet?style=for-the-badge)
-
-![JUnit](https://img.shields.io/badge/JUnit-Testing-red?style=for-the-badge)
+<!-- Testing -->
+<img src="https://img.shields.io/badge/JUnit-5-C21325">
+<img src="https://img.shields.io/badge/Embedded-Kafka-Testing-000000">
+<img src="https://img.shields.io/badge/Integration-Testing-32CD32">
+<img src="https://img.shields.io/badge/Maven-Build-C71A36?logo=apachemaven&logoColor=white">
 
 </p>
+
+<img src="assets/demo/MidasCore_Demo.gif" alt="MidasCore Demo" width="900">
+
+</div>
 
 ---
 
