@@ -17,7 +17,6 @@
 
 <!-- APIs -->
 <img src="https://img.shields.io/badge/REST-API-005571?logo=fastapi&logoColor=white">
-<img src="https://img.shields.io/badge/RestTemplate-HTTP_Client-0A66C2">
 <img src="https://img.shields.io/badge/JSON-Serialization-000000?logo=json&logoColor=white">
 
 <!-- Messaging -->
