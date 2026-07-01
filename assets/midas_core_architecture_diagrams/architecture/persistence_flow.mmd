@@ -1,0 +1,17 @@
+flowchart TD
+    valid[Validated Transaction] --> sender[Load Sender UserRecord]
+    valid --> recipient[Load Recipient UserRecord]
+    sender --> debit[Debit sender by transaction amount]
+    recipient --> credit[Credit recipient by amount + incentive]
+    debit --> saveSender[Save updated sender]
+    credit --> saveRecipient[Save updated recipient]
+    saveSender --> db[(H2 Database)]
+    saveRecipient --> db
+    valid --> record[Create TransactionRecord]
+    record --> relation1[Many-to-One sender -> UserRecord]
+    record --> relation2[Many-to-One recipient -> UserRecord]
+    record --> incentive[Store incentive amount]
+    relation1 --> saveRecord[Save TransactionRecord]
+    relation2 --> saveRecord
+    incentive --> saveRecord
+    saveRecord --> db

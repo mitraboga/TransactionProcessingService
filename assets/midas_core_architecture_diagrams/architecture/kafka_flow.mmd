@@ -1,0 +1,6 @@
+flowchart TD
+    producer[Transaction Producer] -->|JSON Transaction| topic[(Kafka Topic\ntrader-updates)]
+    topic -->|Embedded Kafka in tests| listener[@KafkaListener\nTransactionListener.listen]
+    listener --> deserialize[Deserialize into\nTransaction object]
+    deserialize --> fields[senderId\nrecipientId\namount]
+    fields --> next[Pass to validation layer]

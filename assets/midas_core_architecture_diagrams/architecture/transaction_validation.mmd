@@ -1,0 +1,11 @@
+flowchart TD
+    start[Kafka Transaction Received] --> sender{Sender ID exists?}
+    sender -->|No| discard1[Discard transaction\nNo DB modification]
+    sender -->|Yes| recipient{Recipient ID exists?}
+    recipient -->|No| discard2[Discard transaction\nNo DB modification]
+    recipient -->|Yes| funds{Sender balance >= amount?}
+    funds -->|No| discard3[Discard transaction\nInsufficient funds]
+    funds -->|Yes| valid[Valid transaction]
+    valid --> incentive[Call Incentive API]
+    incentive --> update[Update balances]
+    update --> persist[Persist TransactionRecord]

@@ -1,0 +1,31 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam monochrome true
+
+class UserRecord {
+  Long id
+  String name
+  float balance
+}
+
+class TransactionRecord {
+  Long id
+  float amount
+  float incentive
+}
+
+class Transaction {
+  long senderId
+  long recipientId
+  float amount
+}
+
+class Balance {
+  float amount
+}
+
+UserRecord "1" <-- "many" TransactionRecord : sender
+UserRecord "1" <-- "many" TransactionRecord : recipient
+Transaction ..> TransactionRecord : validated and persisted as
+Balance ..> UserRecord : exposes balance from
+@enduml

@@ -1,0 +1,13 @@
+sequenceDiagram
+    participant K as Kafka Listener
+    participant V as Validation Logic
+    participant I as Incentive API<br/>localhost:8080/incentive
+    participant D as H2 Database
+
+    K->>V: Validate Transaction(senderId, recipientId, amount)
+    V-->>K: Transaction valid
+    K->>I: POST /incentive with Transaction JSON
+    I-->>K: Incentive { amount }
+    K->>D: Subtract transaction amount from sender
+    K->>D: Add transaction amount + incentive to recipient
+    K->>D: Save TransactionRecord(amount, incentive)
