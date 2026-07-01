@@ -48,7 +48,6 @@
 <img src="assets/demo/MidasCore_Demo.gif" alt="MidasCore Demo" width="900">
 
 </div>
-
 ---
 
 # About
