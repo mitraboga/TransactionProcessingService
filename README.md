@@ -22,7 +22,6 @@
 <!-- Messaging -->
 <img src="https://img.shields.io/badge/Kafka-Consumer-E10098">
 <img src="https://img.shields.io/badge/Event--Driven-Architecture-6F42C1">
-<img src="https://img.shields.io/badge/Asynchronous-Messaging-7B68EE">
 
 <!-- Persistence -->
 <img src="https://img.shields.io/badge/JPA-Entities-20B2AA">
