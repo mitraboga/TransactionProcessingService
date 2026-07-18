@@ -167,9 +167,19 @@ This separation allows each subsystem to evolve independently while communicatin
 
 # Five-Week Sprint Delivery Pipeline
 
-<p align="center">
-<img src="assets/architecture/sprint_pipeline.png" width="95%">
-</p>
+```mermaid
+flowchart LR
+    w1["Week 1<br/>Project Foundation<br/>Java 17 + Maven + Spring Boot"] --> w2["Week 2<br/>Kafka Integration<br/>Consume Transaction Events"]
+    w2 --> w3["Week 3<br/>Database Integration<br/>Validate & Persist Transactions"]
+    w3 --> w4["Week 4<br/>Incentive API Integration<br/>External REST Contract"]
+    w4 --> w5["Week 5<br/>Balance REST API<br/>Expose GET /balance"]
+
+    w1 --> r1["Engineering Report<br/>Environment & Dependency Readiness"]
+    w2 --> r2["Engineering Report<br/>Event Ingestion Verified"]
+    w3 --> r3["Engineering Report<br/>Ledger Consistency Verified"]
+    w4 --> r4["Engineering Report<br/>API Contract Integrated"]
+    w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
+```
 
 The virtual experience is organized as five engineering sprints that progressively deliver production-style backend capabilities.
 
@@ -187,9 +197,18 @@ Each sprint builds directly upon the previous week's deliverables, reflecting an
 
 # High-Level Codebase Overview
 
-<p align="center">
-<img src="assets/architecture/kafka_flow.png" width="90%">
-</p>
+```mermaid
+flowchart TD
+    producer["Transaction Producer"] -->|JSON Transaction| topic["Kafka Topic<br/>trader-updates"]
+
+    topic -->|Embedded Kafka in Tests| listener["@KafkaListener<br/>TransactionListener.listen"]
+
+    listener --> deserialize["Deserialize into<br/>Transaction Object"]
+
+    deserialize --> fields["senderId<br/>recipientId<br/>amount"]
+
+    fields --> next["Pass to Validation Layer"]
+```
 
 The application consists of several independent layers that collaborate to process financial transactions.
 
@@ -197,15 +216,15 @@ The application consists of several independent layers that collaborate to proce
 
 Responsible for asynchronously receiving incoming transactions from the configured Kafka topic.
 
-Primary component:
+**Primary Component**
 
-- TransactionListener
+- `TransactionListener`
 
-Responsibilities:
+**Responsibilities**
 
 - Consume Kafka messages
-- Deserialize JSON into Transaction objects
-- Trigger transaction processing workflow
+- Deserialize JSON into `Transaction` objects
+- Trigger the transaction processing workflow
 
 ---
 
@@ -489,16 +508,58 @@ Message consumption was verified through embedded Kafka integration tests and ru
 
 # Week 3 — Financial Transaction Validation & Persistence
 
-<p align="center">
-<img src="assets/architecture/transaction_validation.png" width="90%">
-</p>
+```mermaid
+flowchart TD
+    start["Kafka Transaction Received"] --> sender{"Sender ID Exists?"}
+
+    sender -->|No| discard1["Discard Transaction<br/>No Database Modification"]
+
+    sender -->|Yes| recipient{"Recipient ID Exists?"}
+
+    recipient -->|No| discard2["Discard Transaction<br/>No Database Modification"]
+
+    recipient -->|Yes| funds{"Sender Balance ≥ Transaction Amount?"}
+
+    funds -->|No| discard3["Discard Transaction<br/>Insufficient Funds"]
+
+    funds -->|Yes| valid["Valid Transaction"]
+
+    valid --> incentive["Call Incentive API"]
+
+    incentive --> update["Update Account Balances"]
+
+    update --> persist["Persist TransactionRecord"]
+```
+
+```mermaid
+flowchart TD
+    valid["Validated Transaction"] --> sender["Load Sender UserRecord"]
+    valid --> recipient["Load Recipient UserRecord"]
+
+    sender --> debit["Debit Sender by Transaction Amount"]
+    recipient --> credit["Credit Recipient by Transaction Amount + Incentive"]
+
+    debit --> saveSender["Save Updated Sender"]
+    credit --> saveRecipient["Save Updated Recipient"]
+
+    saveSender --> db[("H2 Database")]
+    saveRecipient --> db
+
+    valid --> record["Create TransactionRecord"]
+
+    record --> relation1["Many-to-One<br/>Sender → UserRecord"]
+    record --> relation2["Many-to-One<br/>Recipient → UserRecord"]
+    record --> incentive["Store Incentive Amount"]
+
+    relation1 --> saveRecord["Save TransactionRecord"]
+    relation2 --> saveRecord
+    incentive --> saveRecord
+
+    saveRecord --> db
+```
 
 <p align="center">
-<img src="assets/architecture/persistence_flow.png" width="90%">
-</p>
-
-<p align="center">
-<img src="assets/week3/entity_relationships.png" width="90%">
+<img src="assets/screenshots/entity_relationships.png" width="90%">
 </p>
 
 ## Sprint Objective
