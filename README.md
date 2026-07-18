@@ -120,9 +120,37 @@ This architecture demonstrates several common enterprise software engineering pr
 
 # Overall System Architecture
 
-<p align="center">
-<img src="assets/architecture/overall_architecture.png" width="95%">
-</p>
+```mermaid
+flowchart LR
+    producer[Transaction Producer / Frontend] --> kafka["Apache Kafka Topic<br/>trader-updates"]
+    kafka --> listener["TransactionListener<br/>Spring Kafka Consumer"]
+
+    subgraph core["Midas Core - Spring Boot Service"]
+        listener --> validation["Transaction Validation<br/>User IDs + Balance Check"]
+        validation -->|Valid Transaction| incentiveClient["Incentive API Client<br/>RestTemplate"]
+
+        incentiveClient --> balances["Balance Update Logic"]
+
+        balances --> txRecord["Persist TransactionRecord"]
+        balances --> userUpdate["Persist Updated UserRecord"]
+
+        balanceController["BalanceController<br/>GET /balance"] --> userRepo["UserRepository"]
+
+        validation --> userRepo
+
+        txRecord --> txRepo["TransactionRecordRepository"]
+
+        userUpdate --> userRepo
+    end
+
+    incentiveClient --> incentiveApi["External Incentive API<br/>localhost:8080/incentive"]
+
+    userRepo --> db[("H2 In-Memory Database")]
+    txRepo --> db
+
+    client["Balance Client / User"] --> balanceController
+    balanceController --> response["JSON Balance Response"]
+```
 
 The architecture follows an event-driven processing pipeline:
 
