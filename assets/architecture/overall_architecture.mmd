@@ -1,0 +1,21 @@
+flowchart LR
+    producer[Transaction Producer / Frontend] --> kafka[(Apache Kafka Topic\ntrader-updates)]
+    kafka --> listener[TransactionListener\nSpring Kafka Consumer]
+
+    subgraph core[Midas Core - Spring Boot Service]
+        listener --> validation[Transaction Validation\nuser IDs + balance check]
+        validation -->|valid transaction| incentiveClient[Incentive API Client\nRestTemplate]
+        incentiveClient --> balances[Balance Update Logic]
+        balances --> txRecord[Persist TransactionRecord]
+        balances --> userUpdate[Persist Updated UserRecord]
+        balanceController[BalanceController\nGET /balance] --> userRepo[UserRepository]
+        validation --> userRepo
+        txRecord --> txRepo[TransactionRecordRepository]
+        userUpdate --> userRepo
+    end
+
+    incentiveClient --> incentiveApi[External Incentive API\nlocalhost:8080/incentive]
+    userRepo --> db[(H2 In-Memory Database)]
+    txRepo --> db
+    client[Balance Client / User] --> balanceController
+    balanceController --> response[JSON Balance Response]
