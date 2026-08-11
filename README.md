@@ -327,13 +327,13 @@ Rather than implementing the entire platform at once, functionality was delivere
 # Week 1 — Project Foundation & Environment Setup
 
 <p align="center">
-<img src="assets/week1/project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
+<img src="assets/project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
 </p>
 
 <p align="center"><em>Recreated project-structure view showing the Spring Boot application layers, Maven build files, configuration resources, and service directory.</em></p>
 
 <p align="center">
-<img src="assets/week1/kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
+<img src="assets/kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
 </p>
 
 <p align="center"><em>Recreated configuration evidence showing the externalized `trader-updates` Kafka topic and the application settings used by MidasCore.</em></p>
