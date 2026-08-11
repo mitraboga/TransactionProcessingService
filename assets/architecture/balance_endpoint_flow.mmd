@@ -1,0 +1,18 @@
+sequenceDiagram
+    participant C as Client
+    participant B as BalanceController
+    participant R as UserRepository
+    participant D as H2 Database
+
+    C->>B: GET /balance?userId={id}
+    B->>R: findById(userId)
+    R->>D: Query UserRecord
+    alt User exists
+        D-->>R: UserRecord(balance)
+        R-->>B: Optional<UserRecord>
+        B-->>C: Balance { amount = user.balance }
+    else User missing
+        D-->>R: No row
+        R-->>B: Optional.empty
+        B-->>C: Balance { amount = 0.0 }
+    end
