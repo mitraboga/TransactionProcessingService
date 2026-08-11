@@ -118,13 +118,45 @@ This architecture demonstrates several common enterprise software engineering pr
 
 # Overall System Architecture
 
+```mermaid
+flowchart LR
+    producer[Transaction Producer / Frontend] --> kafka["Apache Kafka Topic<br/>trader-updates"]
+    kafka --> listener["TransactionListener<br/>Spring Kafka Consumer"]
+
+    subgraph core["Midas Core - Spring Boot Service"]
+        listener --> validation["Transaction Validation<br/>User IDs + Balance Check"]
+        validation -->|Valid Transaction| incentiveClient["Incentive API Client<br/>RestTemplate"]
+
+        incentiveClient --> balances["Balance Update Logic"]
+
+        balances --> txRecord["Persist TransactionRecord"]
+        balances --> userUpdate["Persist Updated UserRecord"]
+
+        balanceController["BalanceController<br/>GET /balance"] --> userRepo["UserRepository"]
+
+        validation --> userRepo
+
+        txRecord --> txRepo["TransactionRecordRepository"]
+
+        userUpdate --> userRepo
+    end
+
+    incentiveClient --> incentiveApi["External Incentive API<br/>localhost:8080/incentive"]
+
+    userRepo --> db[("H2 In-Memory Database")]
+    txRepo --> db
+
+    client["Balance Client / User"] --> balanceController
+    balanceController --> response["JSON Balance Response"]
+```
+
 <details>
-<summary><strong>View Overall System Architecture</strong></summary>
+<summary><strong>View Overall System Architecture Image</strong></summary>
 
 <br>
 
 <p align="center">
-<img src="assets/overall_architecture.png" alt="MidasCore Overall System Architecture" width="95%">
+<img src="assets/overall_architecture.png" alt="Rendered MidasCore overall system architecture" width="95%">
 </p>
 
 </details>
@@ -144,13 +176,27 @@ This separation allows each subsystem to evolve independently while communicatin
 
 # Five-Week Sprint Delivery Pipeline
 
+```mermaid
+flowchart LR
+    w1["Week 1<br/>Project Foundation<br/>Java 17 + Maven + Spring Boot"] --> w2["Week 2<br/>Kafka Integration<br/>Consume Transaction Events"]
+    w2 --> w3["Week 3<br/>Database Integration<br/>Validate & Persist Transactions"]
+    w3 --> w4["Week 4<br/>Incentive API Integration<br/>External REST Contract"]
+    w4 --> w5["Week 5<br/>Balance REST API<br/>Expose GET /balance"]
+
+    w1 --> r1["Engineering Report<br/>Environment & Dependency Readiness"]
+    w2 --> r2["Engineering Report<br/>Event Ingestion Verified"]
+    w3 --> r3["Engineering Report<br/>Ledger Consistency Verified"]
+    w4 --> r4["Engineering Report<br/>API Contract Integrated"]
+    w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
+```
+
 <details>
-<summary><strong>View Five-Week Sprint Delivery Pipeline</strong></summary>
+<summary><strong>View Five-Week Sprint Delivery Pipeline Image</strong></summary>
 
 <br>
 
 <p align="center">
-<img src="assets/sprint_pipeline.png" alt="Five-Week Sprint Delivery Pipeline" width="95%">
+<img src="assets/sprint_pipeline.png" alt="Rendered five-week sprint delivery pipeline" width="95%">
 </p>
 
 </details>
@@ -500,31 +546,77 @@ Message consumption was verified through embedded Kafka integration tests and ru
 
 # Week 3 — Financial Transaction Validation & Persistence
 
+```mermaid
+flowchart TD
+    start["Kafka Transaction Received"] --> sender{"Sender ID Exists?"}
+
+    sender -->|No| discard1["Discard Transaction<br/>No Database Modification"]
+
+    sender -->|Yes| recipient{"Recipient ID Exists?"}
+
+    recipient -->|No| discard2["Discard Transaction<br/>No Database Modification"]
+
+    recipient -->|Yes| funds{"Sender Balance ≥ Transaction Amount?"}
+
+    funds -->|No| discard3["Discard Transaction<br/>Insufficient Funds"]
+
+    funds -->|Yes| valid["Valid Transaction"]
+
+    valid --> incentive["Call Incentive API"]
+
+    incentive --> update["Update Account Balances"]
+
+    update --> persist["Persist TransactionRecord"]
+```
+
 <details>
-<summary><strong>View Transaction Validation Decision Flow</strong></summary>
+<summary><strong>View Transaction Validation Decision Flow Image</strong></summary>
 
 <br>
 
 <p align="center">
-<img src="assets/transaction_validation.png" alt="Transaction Validation Decision Flow" width="90%">
+<img src="assets/transaction_validation.png" alt="Rendered transaction validation workflow" width="90%">
 </p>
 
 </details>
 
-<br>
+```mermaid
+flowchart TD
+    valid["Validated Transaction"] --> sender["Load Sender UserRecord"]
+    valid --> recipient["Load Recipient UserRecord"]
+
+    sender --> debit["Debit Sender by Transaction Amount"]
+    recipient --> credit["Credit Recipient by Transaction Amount + Incentive"]
+
+    debit --> saveSender["Save Updated Sender"]
+    credit --> saveRecipient["Save Updated Recipient"]
+
+    saveSender --> db[("H2 Database")]
+    saveRecipient --> db
+
+    valid --> record["Create TransactionRecord"]
+
+    record --> relation1["Many-to-One<br/>Sender → UserRecord"]
+    record --> relation2["Many-to-One<br/>Recipient → UserRecord"]
+    record --> incentive["Store Incentive Amount"]
+
+    relation1 --> saveRecord["Save TransactionRecord"]
+    relation2 --> saveRecord
+    incentive --> saveRecord
+
+    saveRecord --> db
+```
 
 <details>
-<summary><strong>View Persistence Workflow and JPA Relationships</strong></summary>
+<summary><strong>View Persistence Workflow and JPA Relationships Image</strong></summary>
 
 <br>
 
 <p align="center">
-<img src="assets/persistence_flow.png" alt="Persistence Workflow and JPA Relationships" width="90%">
+<img src="assets/persistence_flow.png" alt="Rendered persistence workflow" width="90%">
 </p>
 
 </details>
-
-<br>
 
 <p align="center">
 <img src="assets/06_erd.png" alt="MidasCore entity relationship diagram" width="90%">
@@ -1224,7 +1316,7 @@ Throughout the simulation, the following enterprise software engineering concept
 
 # Project Structure
 
-```text
+```
 MidasCore
 │
 ├── assets/
