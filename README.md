@@ -152,6 +152,12 @@ flowchart LR
     balanceController --> response["JSON Balance Response"]
 ```
 
+<p align="center">
+<img src="assets/overall_architecture.png" alt="Rendered MidasCore overall system architecture" width="95%">
+</p>
+
+<p align="center"><em>Rendered system architecture showing Kafka ingestion, transaction validation, Incentive API integration, persistence, and REST balance retrieval.</em></p>
+
 The architecture follows an event-driven processing pipeline:
 
 1. Transactions are published onto Kafka.
@@ -180,6 +186,12 @@ flowchart LR
     w4 --> r4["Engineering Report<br/>API Contract Integrated"]
     w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
 ```
+
+<p align="center">
+<img src="assets/sprint_pipeline.png" alt="Rendered five-week sprint delivery pipeline" width="95%">
+</p>
+
+<p align="center"><em>Rendered sprint pipeline illustrating the incremental progression from project setup through the final customer balance API.</em></p>
 
 The virtual experience is organized as five engineering sprints that progressively deliver production-style backend capabilities.
 
@@ -308,13 +320,23 @@ The MidasCore project was completed through **five iterative engineering sprints
 
 Rather than implementing the entire platform at once, functionality was delivered incrementally, allowing each feature to be validated before introducing additional complexity. This mirrors Agile software development practices commonly used within large engineering organizations, where every sprint concludes with implementation, testing, code review, and stakeholder reporting.
 
+> **Documentation note:** Screenshots labelled as recreated documentation views were reproduced from the completed MidasCore implementation and verified task outputs during project documentation. They illustrate the final configuration, runtime behaviour, and validation evidence rather than representing contemporaneous screenshots captured during the original module sessions.
+
 ---
 
 # Week 1 — Project Foundation & Environment Setup
 
 <p align="center">
-<img src="assets/week1/project_setup.png" width="90%">
+<img src="assets/week1/project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
 </p>
+
+<p align="center"><em>Recreated project-structure view showing the Spring Boot application layers, Maven build files, configuration resources, and service directory.</em></p>
+
+<p align="center">
+<img src="assets/week1/kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
+</p>
+
+<p align="center"><em>Recreated configuration evidence showing the externalized `trader-updates` Kafka topic and the application settings used by MidasCore.</em></p>
 
 ## Sprint Objective
 
@@ -384,6 +406,12 @@ Configuration issues involving Java compatibility, Maven dependency resolution, 
 
 At the conclusion of the sprint, the application successfully initialized and completed the provided verification tests, confirming that the development environment was correctly configured.
 
+<p align="center">
+<img src="assets/week1/taskone_processing_logs.png" alt="Task One startup and build verification output" width="90%">
+</p>
+
+<p align="center"><em>Recreated Task One verification view showing successful Spring Boot initialization, Maven dependency resolution, and the expected Task One output.</em></p>
+
 ---
 
 ## Sprint Outcome
@@ -401,12 +429,22 @@ At the conclusion of the sprint, the application successfully initialized and co
 # Week 2 — Event-Driven Transaction Processing
 
 <p align="center">
-<img src="assets/architecture/kafka_flow.png" width="90%">
+<img src="assets/kafka_flow.png" alt="Kafka event ingestion flow" width="90%">
 </p>
 
+<p align="center"><em>Rendered Kafka flow showing a transaction producer publishing JSON events to `trader-updates` and `TransactionListener` consuming them asynchronously.</em></p>
+
 <p align="center">
-<img src="assets/week2/kafka_listener_debug.png" width="90%">
+<img src="assets/week2/week2_architecture.png" alt="Week 2 event-driven architecture" width="90%">
 </p>
+
+<p align="center"><em>Recreated Week 2 architecture view highlighting the separation between the transaction producer, Kafka broker, and MidasCore consumer.</em></p>
+
+<p align="center">
+<img src="assets/week2/kafka_message_flow.png" alt="Kafka message consumption verification" width="90%">
+</p>
+
+<p align="center"><em>Recreated runtime evidence showing Task Two consuming and deserializing the first four transaction amounts through Embedded Kafka.</em></p>
 
 ## Sprint Objective
 
@@ -492,6 +530,12 @@ Apache Kafka now acts as the boundary between transaction producers and backend 
 
 Message consumption was verified through embedded Kafka integration tests and runtime debugging.
 
+<p align="center">
+<img src="assets/week2/week2_task_results.png" alt="Task Two automated verification results" width="90%">
+</p>
+
+<p align="center"><em>Recreated Task Two results view showing successful Kafka-consumer verification with zero test failures.</em></p>
+
 ---
 
 ## Sprint Outcome
@@ -531,6 +575,12 @@ flowchart TD
     update --> persist["Persist TransactionRecord"]
 ```
 
+<p align="center">
+<img src="assets/transaction_validation.png" alt="Rendered transaction validation workflow" width="90%">
+</p>
+
+<p align="center"><em>Rendered validation workflow illustrating sender, recipient, and sufficient-funds checks before any persistent state is modified.</em></p>
+
 ```mermaid
 flowchart TD
     valid["Validated Transaction"] --> sender["Load Sender UserRecord"]
@@ -559,8 +609,16 @@ flowchart TD
 ```
 
 <p align="center">
-<img src="assets/screenshots/entity_relationships.png" width="90%">
+<img src="assets/persistence_flow.png" alt="Rendered persistence workflow" width="90%">
 </p>
+
+<p align="center"><em>Rendered persistence flow showing validated balance updates and the storage of `UserRecord` and `TransactionRecord` data in H2.</em></p>
+
+<p align="center">
+<img src="assets/week3/erd.png" alt="MidasCore entity relationship diagram" width="90%">
+</p>
+
+<p align="center"><em>Recreated entity-relationship view showing how many `TransactionRecord` entries may reference the same sender and recipient `UserRecord`.</em></p>
 
 ## Sprint Objective
 
@@ -649,6 +707,12 @@ For every valid transaction:
 6. Persist updated users
 7. Persist TransactionRecord
 
+<p align="center">
+<img src="assets/week3/persistence_flow.png" alt="Week 3 transaction persistence flow" width="90%">
+</p>
+
+<p align="center"><em>Recreated workflow view emphasizing the decision path from transaction validation to balance updates, H2 persistence, or rejection without state modification.</em></p>
+
 The database, therefore, acts as the system of record for processed financial activity.
 
 ---
@@ -675,6 +739,12 @@ Introducing JPA significantly reduced boilerplate persistence code while preserv
 
 Entity relationships were modelled using Hibernate annotations to accurately represent real-world financial transactions.
 
+<p align="center">
+<img src="assets/week3/balance_validation.png" alt="Task Three H2 balance validation" width="90%">
+</p>
+
+<p align="center"><em>Recreated H2 verification view showing Waldorf's final persisted balance of `627.86` after the Task Three transaction-processing workflow.</em></p>
+
 ---
 
 ## Sprint Outcome
@@ -694,16 +764,22 @@ Entity relationships were modelled using Hibernate annotations to accurately rep
 # Week 4 — External Incentive Service Integration
 
 <p align="center">
-<img src="assets/architecture/incentive_api_sequence.png" width="92%">
+<img src="assets/incentive_api_sequence.png" alt="Incentive API request-response sequence" width="92%">
 </p>
 
-<p align="center">
-<img src="assets/week4/resttemplate_call.png" width="90%">
-</p>
+<p align="center"><em>Rendered sequence diagram showing MidasCore calling the external Incentive API and applying the returned incentive before persistence.</em></p>
 
 <p align="center">
-<img src="assets/week4/incentive_api_running.png" width="90%">
+<img src="assets/week4/resttemplate_call.png" alt="RestTemplate Incentive API integration" width="90%">
 </p>
+
+<p align="center"><em>Recreated IntelliJ view of the `RestTemplate.postForObject()` request-response logic used to call `http://localhost:8080/incentive`.</em></p>
+
+<p align="center">
+<img src="assets/week4/incentive_api_running.png" alt="External Incentive API running locally" width="90%">
+</p>
+
+<p align="center"><em>Recreated service-startup view showing the standalone Incentive API running on port `8080` for Week 4 integration testing.</em></p>
 
 ## Sprint Objective
 
@@ -821,6 +897,12 @@ MidasCore transitioned from an isolated backend service into a participant withi
 
 The implementation reinforces the architectural principle that business capabilities should remain isolated behind stable API boundaries whenever practical.
 
+<p align="center">
+<img src="assets/week4/task_results.png" alt="Task Four final balance verification" width="90%">
+</p>
+
+<p align="center"><em>Recreated Task Four verification showing Wilbur's final persisted balance of `3089.42` after transaction and incentive processing.</em></p>
+
 ---
 
 ## Sprint Outcome
@@ -838,16 +920,22 @@ The implementation reinforces the architectural principle that business capabili
 # Week 5 — Customer Balance Service
 
 <p align="center">
-<img src="assets/architecture/balance_endpoint_flow.png" width="92%">
+<img src="assets/balance_endpoint_flow.png" alt="Customer balance endpoint request flow" width="92%">
 </p>
 
-<p align="center">
-<img src="assets/week5/balance_controller.png" width="90%">
-</p>
+<p align="center"><em>Rendered balance-endpoint flow showing the synchronous path from `GET /balance` through `BalanceController` and `UserRepository` to the JSON response.</em></p>
 
 <p align="center">
-<img src="assets/week5/browser_balance_endpoint.png" width="90%">
+<img src="assets/week5/balance_controller.png" alt="BalanceController implementation" width="90%">
 </p>
+
+<p align="center"><em>Recreated IntelliJ view of `BalanceController`, including constructor-injected repository access, missing-user handling, and the `GET /balance` mapping.</em></p>
+
+<p align="center">
+<img src="assets/week5/browser_balance_endpoint.png" alt="Balance endpoint JSON response" width="90%">
+</p>
+
+<p align="center"><em>Recreated browser view demonstrating a successful `GET /balance?userId=5` request and the serialized JSON balance response.</em></p>
 
 ## Sprint Objective
 
@@ -947,7 +1035,7 @@ The application now provides both asynchronous transaction processing and synchr
 # Overview of the Codebase
 
 <p align="center">
-<img src="assets/architecture/overall_architecture.png" width="95%">
+<img src="assets/overall_architecture.png" alt="MidasCore overall architecture" width="95%">
 </p>
 
 MidasCore follows a layered architecture that separates messaging, business logic, persistence, external integrations, and REST presentation into clearly defined components.
@@ -1018,8 +1106,10 @@ The Incentive API remains completely independent from MidasCore, demonstrating s
 # Testing & Validation
 
 <p align="center">
-<img src="assets/testing/task_results.png" width="92%">
+<img src="assets/testing/testing_validation_results.png" alt="MidasCore testing and validation summary" width="92%">
 </p>
+
+<p align="center"><em>Recreated verification summary consolidating the major checks completed across application startup, Kafka ingestion, validation, persistence, Incentive API integration, and REST balance retrieval.</em></p>
 
 Each sprint concludes with automated verification to ensure newly introduced functionality integrates correctly with existing application behavior.
 
