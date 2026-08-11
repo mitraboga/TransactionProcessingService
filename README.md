@@ -152,10 +152,6 @@ flowchart LR
     balanceController --> response["JSON Balance Response"]
 ```
 
-<p align="center">
-<img src="assets/overall_architecture.png" alt="Rendered MidasCore overall system architecture" width="95%">
-</p>
-
 <p align="center"><em>Rendered system architecture showing Kafka ingestion, transaction validation, Incentive API integration, persistence, and REST balance retrieval.</em></p>
 
 The architecture follows an event-driven processing pipeline:
@@ -186,10 +182,6 @@ flowchart LR
     w4 --> r4["Engineering Report<br/>API Contract Integrated"]
     w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
 ```
-
-<p align="center">
-<img src="assets/sprint_pipeline.png" alt="Rendered five-week sprint delivery pipeline" width="95%">
-</p>
 
 <p align="center"><em>Rendered sprint pipeline illustrating the incremental progression from project setup through the final customer balance API.</em></p>
 
