@@ -118,43 +118,16 @@ This architecture demonstrates several common enterprise software engineering pr
 
 # Overall System Architecture
 
-```mermaid
-flowchart LR
-    producer[Transaction Producer / Frontend] --> kafka["Apache Kafka Topic<br/>trader-updates"]
-    kafka --> listener["TransactionListener<br/>Spring Kafka Consumer"]
+<details>
+<summary><strong>View Overall System Architecture</strong></summary>
 
-    subgraph core["Midas Core - Spring Boot Service"]
-        listener --> validation["Transaction Validation<br/>User IDs + Balance Check"]
-        validation -->|Valid Transaction| incentiveClient["Incentive API Client<br/>RestTemplate"]
-
-        incentiveClient --> balances["Balance Update Logic"]
-
-        balances --> txRecord["Persist TransactionRecord"]
-        balances --> userUpdate["Persist Updated UserRecord"]
-
-        balanceController["BalanceController<br/>GET /balance"] --> userRepo["UserRepository"]
-
-        validation --> userRepo
-
-        txRecord --> txRepo["TransactionRecordRepository"]
-
-        userUpdate --> userRepo
-    end
-
-    incentiveClient --> incentiveApi["External Incentive API<br/>localhost:8080/incentive"]
-
-    userRepo --> db[("H2 In-Memory Database")]
-    txRepo --> db
-
-    client["Balance Client / User"] --> balanceController
-    balanceController --> response["JSON Balance Response"]
-```
+<br>
 
 <p align="center">
-<img src="assets/overall_architecture.png" alt="Rendered MidasCore overall system architecture" width="95%">
+<img src="assets/overall_architecture.png" alt="MidasCore Overall System Architecture" width="95%">
 </p>
 
-<p align="center"><em>Rendered system architecture showing Kafka ingestion, transaction validation, Incentive API integration, persistence, and REST balance retrieval.</em></p>
+</details>
 
 The architecture follows an event-driven processing pipeline:
 
@@ -171,25 +144,16 @@ This separation allows each subsystem to evolve independently while communicatin
 
 # Five-Week Sprint Delivery Pipeline
 
-```mermaid
-flowchart LR
-    w1["Week 1<br/>Project Foundation<br/>Java 17 + Maven + Spring Boot"] --> w2["Week 2<br/>Kafka Integration<br/>Consume Transaction Events"]
-    w2 --> w3["Week 3<br/>Database Integration<br/>Validate & Persist Transactions"]
-    w3 --> w4["Week 4<br/>Incentive API Integration<br/>External REST Contract"]
-    w4 --> w5["Week 5<br/>Balance REST API<br/>Expose GET /balance"]
+<details>
+<summary><strong>View Five-Week Sprint Delivery Pipeline</strong></summary>
 
-    w1 --> r1["Engineering Report<br/>Environment & Dependency Readiness"]
-    w2 --> r2["Engineering Report<br/>Event Ingestion Verified"]
-    w3 --> r3["Engineering Report<br/>Ledger Consistency Verified"]
-    w4 --> r4["Engineering Report<br/>API Contract Integrated"]
-    w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
-```
+<br>
 
 <p align="center">
-<img src="assets/sprint_pipeline.png" alt="Rendered five-week sprint delivery pipeline" width="95%">
+<img src="assets/sprint_pipeline.png" alt="Five-Week Sprint Delivery Pipeline" width="95%">
 </p>
 
-<p align="center"><em>Rendered sprint pipeline illustrating the incremental progression from project setup through the final customer balance API.</em></p>
+</details>
 
 The virtual experience is organized as five engineering sprints that progressively deliver production-style backend capabilities.
 
@@ -328,13 +292,9 @@ Rather than implementing the entire platform at once, functionality was delivere
 <img src="assets/05_project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
 </p>
 
-<p align="center"><em>Recreated project-structure view showing the Spring Boot application layers, Maven build files, configuration resources, and service directory.</em></p>
-
 <p align="center">
 <img src="assets/01_kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
 </p>
-
-<p align="center"><em>Recreated configuration evidence showing the externalized `trader-updates` Kafka topic and the application settings used by MidasCore.</em></p>
 
 ## Sprint Objective
 
@@ -408,8 +368,6 @@ At the conclusion of the sprint, the application successfully initialized and co
 <img src="assets/03_taskone_processing_logs.png" alt="Task One startup and build verification output" width="90%">
 </p>
 
-<p align="center"><em>Recreated Task One verification view showing successful Spring Boot initialization, Maven dependency resolution, and the expected Task One output.</em></p>
-
 ---
 
 ## Sprint Outcome
@@ -430,19 +388,13 @@ At the conclusion of the sprint, the application successfully initialized and co
 <img src="assets/kafka_flow.png" alt="Kafka event ingestion flow" width="90%">
 </p>
 
-<p align="center"><em>Rendered Kafka flow showing a transaction producer publishing JSON events to `trader-updates` and `TransactionListener` consuming them asynchronously.</em></p>
-
 <p align="center">
 <img src="assets/07_week2_architecture.png" alt="Week 2 event-driven architecture" width="90%">
 </p>
 
-<p align="center"><em>Recreated Week 2 architecture view highlighting the separation between the transaction producer, Kafka broker, and MidasCore consumer.</em></p>
-
 <p align="center">
 <img src="assets/02_kafka_message_flow.png" alt="Kafka message consumption verification" width="90%">
 </p>
-
-<p align="center"><em>Recreated runtime evidence showing Task Two consuming and deserializing the first four transaction amounts through Embedded Kafka.</em></p>
 
 ## Sprint Objective
 
@@ -532,8 +484,6 @@ Message consumption was verified through embedded Kafka integration tests and ru
 <img src="assets/09_week2_task_results.png" alt="Task Two automated verification results" width="90%">
 </p>
 
-<p align="center"><em>Recreated Task Two results view showing successful Kafka-consumer verification with zero test failures.</em></p>
-
 ---
 
 ## Sprint Outcome
@@ -550,73 +500,35 @@ Message consumption was verified through embedded Kafka integration tests and ru
 
 # Week 3 — Financial Transaction Validation & Persistence
 
-```mermaid
-flowchart TD
-    start["Kafka Transaction Received"] --> sender{"Sender ID Exists?"}
+<details>
+<summary><strong>View Transaction Validation Decision Flow</strong></summary>
 
-    sender -->|No| discard1["Discard Transaction<br/>No Database Modification"]
-
-    sender -->|Yes| recipient{"Recipient ID Exists?"}
-
-    recipient -->|No| discard2["Discard Transaction<br/>No Database Modification"]
-
-    recipient -->|Yes| funds{"Sender Balance ≥ Transaction Amount?"}
-
-    funds -->|No| discard3["Discard Transaction<br/>Insufficient Funds"]
-
-    funds -->|Yes| valid["Valid Transaction"]
-
-    valid --> incentive["Call Incentive API"]
-
-    incentive --> update["Update Account Balances"]
-
-    update --> persist["Persist TransactionRecord"]
-```
+<br>
 
 <p align="center">
-<img src="assets/transaction_validation.png" alt="Rendered transaction validation workflow" width="90%">
+<img src="assets/transaction_validation.png" alt="Transaction Validation Decision Flow" width="90%">
 </p>
 
-<p align="center"><em>Rendered validation workflow illustrating sender, recipient, and sufficient-funds checks before any persistent state is modified.</em></p>
+</details>
 
-```mermaid
-flowchart TD
-    valid["Validated Transaction"] --> sender["Load Sender UserRecord"]
-    valid --> recipient["Load Recipient UserRecord"]
+<br>
 
-    sender --> debit["Debit Sender by Transaction Amount"]
-    recipient --> credit["Credit Recipient by Transaction Amount + Incentive"]
+<details>
+<summary><strong>View Persistence Workflow and JPA Relationships</strong></summary>
 
-    debit --> saveSender["Save Updated Sender"]
-    credit --> saveRecipient["Save Updated Recipient"]
-
-    saveSender --> db[("H2 Database")]
-    saveRecipient --> db
-
-    valid --> record["Create TransactionRecord"]
-
-    record --> relation1["Many-to-One<br/>Sender → UserRecord"]
-    record --> relation2["Many-to-One<br/>Recipient → UserRecord"]
-    record --> incentive["Store Incentive Amount"]
-
-    relation1 --> saveRecord["Save TransactionRecord"]
-    relation2 --> saveRecord
-    incentive --> saveRecord
-
-    saveRecord --> db
-```
+<br>
 
 <p align="center">
-<img src="assets/persistence_flow.png" alt="Rendered persistence workflow" width="90%">
+<img src="assets/persistence_flow.png" alt="Persistence Workflow and JPA Relationships" width="90%">
 </p>
 
-<p align="center"><em>Rendered persistence flow showing validated balance updates and the storage of `UserRecord` and `TransactionRecord` data in H2.</em></p>
+</details>
+
+<br>
 
 <p align="center">
 <img src="assets/06_erd.png" alt="MidasCore entity relationship diagram" width="90%">
 </p>
-
-<p align="center"><em>Recreated entity-relationship view showing how many `TransactionRecord` entries may reference the same sender and recipient `UserRecord`.</em></p>
 
 ## Sprint Objective
 
@@ -709,8 +621,6 @@ For every valid transaction:
 <img src="assets/08_persistence_flow.png" alt="Week 3 transaction persistence flow" width="90%">
 </p>
 
-<p align="center"><em>Recreated workflow view emphasizing the decision path from transaction validation to balance updates, H2 persistence, or rejection without state modification.</em></p>
-
 The database, therefore, acts as the system of record for processed financial activity.
 
 ---
@@ -741,8 +651,6 @@ Entity relationships were modelled using Hibernate annotations to accurately rep
 <img src="assets/04_balance_validation.png" alt="Task Three H2 balance validation" width="90%">
 </p>
 
-<p align="center"><em>Recreated H2 verification view showing Waldorf's final persisted balance of `627.86` after the Task Three transaction-processing workflow.</em></p>
-
 ---
 
 ## Sprint Outcome
@@ -765,13 +673,9 @@ Entity relationships were modelled using Hibernate annotations to accurately rep
 <img src="assets/incentive_api_sequence.png" alt="Incentive API request-response sequence" width="92%">
 </p>
 
-<p align="center"><em>Rendered sequence diagram showing MidasCore calling the external Incentive API and applying the returned incentive before persistence.</em></p>
-
 <p align="center">
 <img src="assets/10_resttemplate_call.png" alt="RestTemplate Incentive API integration" width="90%">
 </p>
-
-<p align="center"><em>Recreated IntelliJ view of the `RestTemplate.postForObject()` request-response logic used to call `http://localhost:8080/incentive`.</em></p>
 
 ## Sprint Objective
 
@@ -893,8 +797,6 @@ The implementation reinforces the architectural principle that business capabili
 <img src="assets/11_task_results.png" alt="Task Four final balance verification" width="90%">
 </p>
 
-<p align="center"><em>Recreated Task Four verification showing Wilbur's final persisted balance of `3089.42` after transaction and incentive processing.</em></p>
-
 ---
 
 ## Sprint Outcome
@@ -915,19 +817,13 @@ The implementation reinforces the architectural principle that business capabili
 <img src="assets/balance_endpoint_flow.png" alt="Customer balance endpoint request flow" width="92%">
 </p>
 
-<p align="center"><em>Rendered balance-endpoint flow showing the synchronous path from `GET /balance` through `BalanceController` and `UserRepository` to the JSON response.</em></p>
-
 <p align="center">
 <img src="assets/balance_controller.png" alt="BalanceController implementation" width="90%">
 </p>
 
-<p align="center"><em>Recreated IntelliJ view of `BalanceController`, including constructor-injected repository access, missing-user handling, and the `GET /balance` mapping.</em></p>
-
 <p align="center">
 <img src="assets/browser_balance_endpoint.png" alt="Balance endpoint JSON response" width="90%">
 </p>
-
-<p align="center"><em>Recreated browser view demonstrating a successful `GET /balance?userId=5` request and the serialized JSON balance response.</em></p>
 
 ## Sprint Objective
 
@@ -1100,8 +996,6 @@ The Incentive API remains completely independent from MidasCore, demonstrating s
 <p align="center">
 <img src="assets/12_testing_validation_results.png" alt="MidasCore testing and validation summary" width="92%">
 </p>
-
-<p align="center"><em>Recreated verification summary consolidating the major checks completed across application startup, Kafka ingestion, validation, persistence, Incentive API integration, and REST balance retrieval.</em></p>
 
 Each sprint concludes with automated verification to ensure newly introduced functionality integrates correctly with existing application behavior.
 
