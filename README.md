@@ -37,8 +37,6 @@
 
 </p>
 
-<img src="assets/demo/MidasCore_Demo.gif" alt="MidasCore Demo" width="900">
-
 </div>
 
 ---
@@ -152,6 +150,10 @@ flowchart LR
     balanceController --> response["JSON Balance Response"]
 ```
 
+<p align="center">
+<img src="assets/overall_architecture.png" alt="Rendered MidasCore overall system architecture" width="95%">
+</p>
+
 <p align="center"><em>Rendered system architecture showing Kafka ingestion, transaction validation, Incentive API integration, persistence, and REST balance retrieval.</em></p>
 
 The architecture follows an event-driven processing pipeline:
@@ -182,6 +184,10 @@ flowchart LR
     w4 --> r4["Engineering Report<br/>API Contract Integrated"]
     w5 --> r5["Engineering Report<br/>Go-Live Verification Completed"]
 ```
+
+<p align="center">
+<img src="assets/sprint_pipeline.png" alt="Rendered five-week sprint delivery pipeline" width="95%">
+</p>
 
 <p align="center"><em>Rendered sprint pipeline illustrating the incremental progression from project setup through the final customer balance API.</em></p>
 
@@ -767,12 +773,6 @@ Entity relationships were modelled using Hibernate annotations to accurately rep
 
 <p align="center"><em>Recreated IntelliJ view of the `RestTemplate.postForObject()` request-response logic used to call `http://localhost:8080/incentive`.</em></p>
 
-<p align="center">
-<img src="assets/incentive_api_running.png" alt="External Incentive API running locally" width="90%">
-</p>
-
-<p align="center"><em>Recreated service-startup view showing the standalone Incentive API running on port `8080` for Week 4 integration testing.</em></p>
-
 ## Sprint Objective
 
 Extend the transaction-processing workflow by integrating an external Incentive API responsible for calculating promotional rewards associated with eligible financial transactions.
@@ -975,7 +975,7 @@ If the requested user does not exist, the endpoint returns:
 }
 ```
 
-This defensive behaviour provides a predictable API contract for downstream consumers while avoiding unnecessary server errors.
+This defensive behavior provides a predictable API contract for downstream consumers while avoiding unnecessary server errors.
 
 ---
 
@@ -1330,18 +1330,32 @@ Throughout the simulation, the following enterprise software engineering concept
 
 # Project Structure
 
-```
+```text
 MidasCore
 │
 ├── assets/
 │   ├── architecture/
-│   ├── demo/
-│   ├── testing/
-│   ├── week1/
-│   ├── week2/
-│   ├── week3/
-│   ├── week4/
-│   └── week5/
+│   ├── 01_kafka_topic_setup.png
+│   ├── 02_kafka_message_flow.png
+│   ├── 03_taskone_processing_logs.png
+│   ├── 04_balance_validation.png
+│   ├── 05_project_structure.png
+│   ├── 06_erd.png
+│   ├── 07_week2_architecture.png
+│   ├── 08_persistence_flow.png
+│   ├── 09_week2_task_results.png
+│   ├── 10_resttemplate_call.png
+│   ├── 11_task_results.png
+│   ├── 12_testing_validation_results.png
+│   ├── balance_controller.png
+│   ├── browser_balance_endpoint.png
+│   ├── balance_endpoint_flow.png
+│   ├── incentive_api_sequence.png
+│   ├── kafka_flow.png
+│   ├── overall_architecture.png
+│   ├── persistence_flow.png
+│   ├── sprint_pipeline.png
+│   └── transaction_validation.png
 │
 ├── src/
 │   ├── main/
