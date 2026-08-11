@@ -926,13 +926,13 @@ The implementation reinforces the architectural principle that business capabili
 <p align="center"><em>Rendered balance-endpoint flow showing the synchronous path from `GET /balance` through `BalanceController` and `UserRepository` to the JSON response.</em></p>
 
 <p align="center">
-<img src="assets/week5/balance_controller.png" alt="BalanceController implementation" width="90%">
+<img src="assets/balance_controller.png" alt="BalanceController implementation" width="90%">
 </p>
 
 <p align="center"><em>Recreated IntelliJ view of `BalanceController`, including constructor-injected repository access, missing-user handling, and the `GET /balance` mapping.</em></p>
 
 <p align="center">
-<img src="assets/week5/browser_balance_endpoint.png" alt="Balance endpoint JSON response" width="90%">
+<img src="assets/browser_balance_endpoint.png" alt="Balance endpoint JSON response" width="90%">
 </p>
 
 <p align="center"><em>Recreated browser view demonstrating a successful `GET /balance?userId=5` request and the serialized JSON balance response.</em></p>
