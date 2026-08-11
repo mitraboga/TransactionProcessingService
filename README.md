@@ -327,13 +327,13 @@ Rather than implementing the entire platform at once, functionality was delivere
 # Week 1 — Project Foundation & Environment Setup
 
 <p align="center">
-<img src="assets/project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
+<img src="assets/05_project_structure.png" alt="MidasCore project structure in IntelliJ IDEA" width="90%">
 </p>
 
 <p align="center"><em>Recreated project-structure view showing the Spring Boot application layers, Maven build files, configuration resources, and service directory.</em></p>
 
 <p align="center">
-<img src="assets/kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
+<img src="assets/01_kafka_topic_setup.png" alt="Kafka topic and application configuration" width="90%">
 </p>
 
 <p align="center"><em>Recreated configuration evidence showing the externalized `trader-updates` Kafka topic and the application settings used by MidasCore.</em></p>
@@ -407,7 +407,7 @@ Configuration issues involving Java compatibility, Maven dependency resolution, 
 At the conclusion of the sprint, the application successfully initialized and completed the provided verification tests, confirming that the development environment was correctly configured.
 
 <p align="center">
-<img src="assets/week1/taskone_processing_logs.png" alt="Task One startup and build verification output" width="90%">
+<img src="assets/03_taskone_processing_logs.png" alt="Task One startup and build verification output" width="90%">
 </p>
 
 <p align="center"><em>Recreated Task One verification view showing successful Spring Boot initialization, Maven dependency resolution, and the expected Task One output.</em></p>
@@ -435,13 +435,13 @@ At the conclusion of the sprint, the application successfully initialized and co
 <p align="center"><em>Rendered Kafka flow showing a transaction producer publishing JSON events to `trader-updates` and `TransactionListener` consuming them asynchronously.</em></p>
 
 <p align="center">
-<img src="assets/week2/week2_architecture.png" alt="Week 2 event-driven architecture" width="90%">
+<img src="assets/07_week2_architecture.png" alt="Week 2 event-driven architecture" width="90%">
 </p>
 
 <p align="center"><em>Recreated Week 2 architecture view highlighting the separation between the transaction producer, Kafka broker, and MidasCore consumer.</em></p>
 
 <p align="center">
-<img src="assets/week2/kafka_message_flow.png" alt="Kafka message consumption verification" width="90%">
+<img src="assets/02_kafka_message_flow.png" alt="Kafka message consumption verification" width="90%">
 </p>
 
 <p align="center"><em>Recreated runtime evidence showing Task Two consuming and deserializing the first four transaction amounts through Embedded Kafka.</em></p>
@@ -531,7 +531,7 @@ Apache Kafka now acts as the boundary between transaction producers and backend 
 Message consumption was verified through embedded Kafka integration tests and runtime debugging.
 
 <p align="center">
-<img src="assets/week2/week2_task_results.png" alt="Task Two automated verification results" width="90%">
+<img src="assets/09_week2_task_results.png" alt="Task Two automated verification results" width="90%">
 </p>
 
 <p align="center"><em>Recreated Task Two results view showing successful Kafka-consumer verification with zero test failures.</em></p>
@@ -615,7 +615,7 @@ flowchart TD
 <p align="center"><em>Rendered persistence flow showing validated balance updates and the storage of `UserRecord` and `TransactionRecord` data in H2.</em></p>
 
 <p align="center">
-<img src="assets/week3/erd.png" alt="MidasCore entity relationship diagram" width="90%">
+<img src="assets/06_erd.png" alt="MidasCore entity relationship diagram" width="90%">
 </p>
 
 <p align="center"><em>Recreated entity-relationship view showing how many `TransactionRecord` entries may reference the same sender and recipient `UserRecord`.</em></p>
@@ -708,7 +708,7 @@ For every valid transaction:
 7. Persist TransactionRecord
 
 <p align="center">
-<img src="assets/week3/persistence_flow.png" alt="Week 3 transaction persistence flow" width="90%">
+<img src="assets/08_persistence_flow.png" alt="Week 3 transaction persistence flow" width="90%">
 </p>
 
 <p align="center"><em>Recreated workflow view emphasizing the decision path from transaction validation to balance updates, H2 persistence, or rejection without state modification.</em></p>
@@ -740,7 +740,7 @@ Introducing JPA significantly reduced boilerplate persistence code while preserv
 Entity relationships were modelled using Hibernate annotations to accurately represent real-world financial transactions.
 
 <p align="center">
-<img src="assets/week3/balance_validation.png" alt="Task Three H2 balance validation" width="90%">
+<img src="assets/04_balance_validation.png" alt="Task Three H2 balance validation" width="90%">
 </p>
 
 <p align="center"><em>Recreated H2 verification view showing Waldorf's final persisted balance of `627.86` after the Task Three transaction-processing workflow.</em></p>
@@ -770,13 +770,13 @@ Entity relationships were modelled using Hibernate annotations to accurately rep
 <p align="center"><em>Rendered sequence diagram showing MidasCore calling the external Incentive API and applying the returned incentive before persistence.</em></p>
 
 <p align="center">
-<img src="assets/week4/resttemplate_call.png" alt="RestTemplate Incentive API integration" width="90%">
+<img src="assets/10_resttemplate_call.png" alt="RestTemplate Incentive API integration" width="90%">
 </p>
 
 <p align="center"><em>Recreated IntelliJ view of the `RestTemplate.postForObject()` request-response logic used to call `http://localhost:8080/incentive`.</em></p>
 
 <p align="center">
-<img src="assets/week4/incentive_api_running.png" alt="External Incentive API running locally" width="90%">
+<img src="assets/incentive_api_running.png" alt="External Incentive API running locally" width="90%">
 </p>
 
 <p align="center"><em>Recreated service-startup view showing the standalone Incentive API running on port `8080` for Week 4 integration testing.</em></p>
@@ -898,7 +898,7 @@ MidasCore transitioned from an isolated backend service into a participant withi
 The implementation reinforces the architectural principle that business capabilities should remain isolated behind stable API boundaries whenever practical.
 
 <p align="center">
-<img src="assets/week4/task_results.png" alt="Task Four final balance verification" width="90%">
+<img src="assets/11_task_results.png" alt="Task Four final balance verification" width="90%">
 </p>
 
 <p align="center"><em>Recreated Task Four verification showing Wilbur's final persisted balance of `3089.42` after transaction and incentive processing.</em></p>
@@ -983,7 +983,7 @@ If the requested user does not exist, the endpoint returns:
 }
 ```
 
-This defensive behavior provides a predictable API contract for downstream consumers while avoiding unnecessary server errors.
+This defensive behaviour provides a predictable API contract for downstream consumers while avoiding unnecessary server errors.
 
 ---
 
@@ -1106,7 +1106,7 @@ The Incentive API remains completely independent from MidasCore, demonstrating s
 # Testing & Validation
 
 <p align="center">
-<img src="assets/testing/testing_validation_results.png" alt="MidasCore testing and validation summary" width="92%">
+<img src="assets/12_testing_validation_results.png" alt="MidasCore testing and validation summary" width="92%">
 </p>
 
 <p align="center"><em>Recreated verification summary consolidating the major checks completed across application startup, Kafka ingestion, validation, persistence, Incentive API integration, and REST balance retrieval.</em></p>
